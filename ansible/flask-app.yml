@@ -1,0 +1,45 @@
+---
+    - name: Create Flask runtime user
+      user:
+        name: "{{ flask_user }}"
+    - name: Install packages
+      apt: pkg={{ item }} state=latest
+      with_items:
+        - python3
+        - python-virtualenv
+        - python3-pip
+
+    - name: Creating project folder
+      file: path="{{ flask_path }}" state=directory mode=0755 owner={{ flask_user }} group=nginx
+
+    - name: Deploy application code
+      copy: src=../{{ item }} dest={{ flask_path }} mode=0755 owner={{ flask_user }} group=nginx
+      with_items:
+        - static
+        - templates
+        - flask_app.py
+        - wsgi.py
+        - requirements.txt
+      tags: code
+
+    - name: Deploy instance (no overwrite)
+      copy: src=../instance dest={{ flask_path }} mode=0755 force=no owner={{ flask_user }} group=nginx
+
+    - pip:
+        requirements: "{{ flask_path }}/requirements.txt"
+        virtualenv: "{{ flask_path }}/venv"
+        virtualenv_python: python3.5
+
+    - file: path="{{ flask_path }}" recurse=yes owner={{ flask_user }} group=nginx
+      tags: code
+
+    - template: src=venv_exec dest={{ flask_path }}/venv/bin/exec mode=755 owner={{ flask_user }}
+
+    - template: src=flask-env dest=/etc/flask-env mode=755 owner={{ flask_user }}
+
+    - name: Deploy Flask Service (via Gunicorn)
+      template: src=flask.service dest=/etc/systemd/system/flask.service mode=755
+
+    - name: Enable Flask service
+      systemd: name=flask enabled=yes state=restarted daemon-reload=yes
+      tags: code

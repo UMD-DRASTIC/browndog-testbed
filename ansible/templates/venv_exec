@@ -1,0 +1,4 @@
+#!/bin/bash
+source {{ flask_path }}/venv/bin/activate
+export FLASK_APP={{ flask_path }}/flask_app.py
+$@

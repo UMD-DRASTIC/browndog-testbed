@@ -1,0 +1,47 @@
+- hosts: browndog-testbed
+  become: yes
+
+  vars:
+    elasticsearch_user: elasticsearch
+    elasticsearch_max_open_files: 65535
+    user: ciber
+    flask_path: /opt/testbed
+    flask_user: testbed
+
+  tasks:
+    - apt_repository: repo="deb http://nginx.org/packages/ubuntu/ trusty nginx" state=present
+    - apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+    - name: Install packages
+      apt: name={{ item }} state=present update_cache=yes
+      with_items:
+        - nginx
+        - git
+        - nfs-common
+
+    - name: Kibana
+      include: kibana.yml
+
+    - name: Testbed Flask App
+      include: flask-app.yml
+
+    - name: Configure Testbed Nginx
+      template: src=templates/nginx-testbed.conf dest=/etc/nginx/conf.d/testbed.conf
+
+    - name: Configure Kibana Nginx
+      template: src=templates/nginx-kibana.conf dest=/etc/nginx/conf.d/kibana.conf
+
+    - name: Configure Elastic Nginx
+      template: src=templates/nginx-elastic.conf dest=/etc/nginx/conf.d/elastic.conf
+
+    - name: Configure Nginx Passwords
+      template: src=templates/passwords dest=/etc/nginx/passwords
+
+    - name: Mount CIBER XFER directory
+      lineinfile: dest=/etc/fstab line="192.168.0.4:/export/ciber	/srv/ciber	nfs	_netdev,ro	0	0"
+    - file: path=/srv/ciber state=directory
+    - mount: name=/srv/ciber src=192.168.0.4:/export/ciber fstype=nfs state=mounted
+
+    - name: Start services
+      service: name={{ item }} enabled=yes state=restarted
+      with_items:
+        - nginx

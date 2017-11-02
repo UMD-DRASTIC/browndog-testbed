@@ -1,0 +1,61 @@
+extractors-3d/OniExtractor:
+  - *.file.application.oni.#
+extractors-3d/ObjJSONExtractor:
+  - *.file.model.obj.#
+  -	*.file.model.ply.#
+  -	*.file.model.x3d+xml.#
+  -	*.file.model.x3d-xml.#
+  -	*.file.application.x-tgif.#
+  -	*.file.application.sla.#
+extractors-3d/OBJMergerExtractor:
+  - *.file.model.obj-zipped.#
+  - *.file.model.x3d-zipped.#
+extractors-3d/PlyObjExtractor:
+  - *.file.model.ply.#
+extractors-3d/ThreeDMetadataExtractor:
+  - *.file.model.obj.#
+  - *.file.model.ply.#
+  - *.file.model.x3d+xml.#
+  - *.file.model.x3d-xml.#
+  - *.file.application.x-tgif.#
+  - *.file.application.sla.#
+  - *.file.model.obj-zipped.#
+  - *.file.model.x3d-zipped.#
+  - *.file.model.collada+xml.#
+  - *.file.model.collada-xml.#
+extractors-3d/X3DhtmlExtractor:
+  - *.file.model.x3d+xml.#
+  - *.file.model.x3d-xml.#
+extractors-bd-cz/
+
+extractors-books
+extractors-cedd
+extractors-census
+extractors-cinemetrics
+extractors-core
+extractors-cv
+extractors-dbpedia
+extractors-digest
+extractors-drone
+extractors-examples
+extractors-geo
+extractors-geotiff
+extractors-hpc
+extractors-lsva
+extractors-lsva-integrated
+extractors-maps
+extractors-movieslice
+extractors-mri
+extractors-msc
+extractors-nlp
+extractors-opendronemap
+extractors-person-detector
+extractors-person-tracking
+extractors-plantcv
+extractors-ptm
+extractors-rabbitmq
+extractors-rulechecker
+extractors-seabird
+extractors-server
+extractors-siegfried
+extractors-versus
