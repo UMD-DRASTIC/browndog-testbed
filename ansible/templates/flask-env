@@ -1,2 +1,3 @@
 PATH={{ flask_path }}/venv/bin
 FTP_OVER_HTTP_URL={{ ftp_over_http_url }}
+ELASTICSEARCH_URL={{ elasticsearch_url }}

@@ -16,6 +16,8 @@ handler = handlers.RotatingFileHandler(
   backupCount=20)
 app.logger.addHandler(handler)
 
+elasticsearch_url = os.getenv('ELASTICSEARCH_URL', default='http://localhost:9200')
+
 app.config.update(dict(
     # DATABASE=os.path.join(app.instance_path, 'sqlite3.db'),
     DEBUG=True,
@@ -34,6 +36,31 @@ def page_not_found(error):
 @app.route('/')
 def welcome():
     return render_template('index.html')
+
+
+@app.route('/bytes-in-format')
+def bytes_in_format():
+    return format_report(inbytes=True)
+
+
+@app.route('/files-in-format')
+def format_report(inbytes=False):
+    inventory_url = "{0}/ciber-file-extensions/_search".format(elasticsearch_url)
+    sort_field = 'bytes_in_format.value' if inbytes else 'doc_count'
+    q_extensions = '''
+    {{
+      "size": 100,
+      "_source": [ "mimetype", "key", "doc_count", "bytes_in_format.value" ],
+      "query": {{
+        "match_all": {{}}
+      }},
+      "sort": [
+        {{ "{0}": "desc" }}
+      ]
+    }}'''.format(sort_field)
+    headers = {'cache-control': "no-cache"}
+    response = requests.request("POST", inventory_url, data=q_extensions, headers=headers).json()
+    return jsonify(response)
 
 
 if __name__ == '__main__':

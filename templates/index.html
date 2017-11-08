@@ -37,7 +37,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">CI-BER Testbed for Brown Dog</a>
+          <a class="navbar-brand" href="#">Brown Dog Testbed at UMD</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -57,23 +57,24 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li id="append-sims" class="active"><a href="/">Overview</a></li>
+            <li class="active"><a href="/">Overview</a></li>
+            <li id="append-sims" class="inactive"><a href="http://browndog-testbed.umd.edu:3000/">Grafana (UMD Login)</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">CI-BER Collection Statistics</h1>
-
+          <h1 class="page-header">CI-BER Test Collections</h1>
           <div class="row placeholders">
             <div class="col-md-4 placeholder">
               <h4>Summary</h4>
+              <p>The CI-BER digital archives are used as test data.</p>
               <span class="text-muted">Some numbers</span>
               <p>
                 <ul style="list-style-type: none; padding:0; margin:0;">
-                  <li>52.21 terabytes</li>
-                  <li>72,165,721 unique files</li>
-                  <!-- <li>?? unique file extensions</li>
-                  <li>?? recognized formats</li>
-                  <li>largest file:</li> -->
+                  <li>52 terabytes</li>
+                  <li>72,236,659 unique files</li>
+                  <li>Thousands of unique file extensions</li>
+                  <!--li>?? recognized formats</li-->
+                  <li>largest file: 32GB ZIP from NOAA</li>
                 </ul>
               </p>
             </div>
@@ -84,9 +85,6 @@
             <div id="formatByteDist" class="col-md-4 placeholder">
               <h4>Bytes by File Extension</h4>
               <span class="text-muted">top 40 by byte count</span><br />
-            </div>
-            <div class="col-md-4 placeholder">
-              <iframe src="http://browndog-testbed.umd.edu:5601/app/kibana#/visualize/edit/AV99iwphJiqo5C4mR8ba?embed=true&_g=(refreshInterval%3A(display%3AOff%2Cpause%3A!f%2Cvalue%3A0)%2Ctime%3A(from%3Anow-5y%2Cmode%3Aquick%2Cto%3Anow))" height="600" width="800"></iframe>
             </div>
           </div>
 
@@ -155,26 +153,26 @@
       .attr("width", 300)
       .attr("height", 300);
 
-      d3.json("/rest/ciberStats/formatDist", function(error, json) {
-          handleFormatDist(error, json, svg1);
+      d3.json("/files-in-format", function(error, json) {
+          handleFormatDist(error, json, svg1, function(d) { return d['_source']['doc_count']; });
         });
 
-      d3.json("/rest/ciberStats/formatByteDist", function(error, json) {
-          handleFormatDist(error, json, svg2);
+      d3.json("/bytes-in-format", function(error, json) {
+          handleFormatDist(error, json, svg2, function(d) { return d['_source']['bytes_in_format']['value']; });
         });
 
-      function handleFormatDist(error, json, svg) {
+      function handleFormatDist(error, json, svg, value_fn) {
         if (error) return console.warn(error);
-        var dist = json["formats"].slice(0,40);
-        var highValue = dist[0]['count'];
+        var dist = json["hits"]["hits"].slice(0,40);
+        var highValue = value_fn(dist[0]);
         var fontSize = d3.scale.linear().domain([0, highValue*2]).rangeRound([10, 100]);
         for (var i = 0; i < dist.length; i++) {
-          dist[i]['fontSize'] = fontSize(dist[i]['count']);
+          dist[i]['fontSize'] = fontSize(value_fn(dist[i]));
         }
         d3.layout.cloud().size([300, 300])
         .timeInterval(10)
         .words(dist.map(function(d) {
-          return {text: d["_id"], count: d["count"], fontSize: d["fontSize"] };
+          return {text: d["_id"], count: value_fn(d), fontSize: d["fontSize"] };
         }))
         .padding(5)
         .rotate(function() { return ~~(Math.random() * 5) * 30 - 60; })

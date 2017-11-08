@@ -18,8 +18,10 @@
         - git
         - nfs-common
 
-    - name: Kibana
-      include: kibana.yml
+    - apt: pkg=apt-transport-https state=installed
+    - apt_repository: repo="deb https://packagecloud.io/grafana/stable/debian/ jessie main"
+    - apt_key: url=https://packagecloud.io/gpg.key
+    - apt: name=grafana state=present update_cache=yes
 
     - name: Testbed Flask App
       include: flask-app.yml
@@ -35,6 +37,7 @@
 
     - name: Configure Nginx Passwords
       template: src=templates/passwords dest=/etc/nginx/passwords
+      tags: passwords
 
     - name: Mount CIBER XFER directory
       lineinfile: dest=/etc/fstab line="192.168.0.4:/export/ciber	/srv/ciber	nfs	_netdev,ro	0	0"
