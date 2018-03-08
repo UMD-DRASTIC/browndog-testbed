@@ -63,5 +63,35 @@ def format_report(inbytes=False):
     return jsonify(response)
 
 
+@app.route('/recent_tests')
+def recent_tests():
+    url = "{0}/gatling-bd-%2A/RUN/_search".format(elasticsearch_url)
+    payload = '''
+    {
+      "size": 0,
+      "aggs": {
+        "simulation": {
+          "terms": {
+            "field": "simulationClass.keyword"
+          },
+          "aggs": {
+            "max_timestamp": {
+              "max": {
+                "field": "@timestamp"
+              }
+            }
+          }
+        }
+      }
+    }'''
+    headers = {
+        'content-type': "application/json",
+        'cache-control': "no-cache"
+        }
+    response = requests.request("POST", url, data=payload, headers=headers).json()
+    response = response['aggregations']['simulation']['buckets']
+    return jsonify(response)
+
+
 if __name__ == '__main__':
     app.run("0.0.0.0", processes=5)
