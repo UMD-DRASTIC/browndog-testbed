@@ -63,33 +63,44 @@ def format_report(inbytes=False):
     return jsonify(response)
 
 
-@app.route('/recent_tests')
-def recent_tests():
-    url = "{0}/gatling-bd-%2A/RUN/_search".format(elasticsearch_url)
+@app.route('/recent_sims')
+def recent_sims():
+    url = "{0}/gatling-bd-%2A/_search".format(elasticsearch_url)
     payload = '''
     {
       "size": 0,
-      "aggs": {
-        "simulation": {
-          "terms": {
-            "field": "simulationClass.keyword"
-          },
-          "aggs": {
-            "max_timestamp": {
-              "max": {
-                "field": "@timestamp"
-              }
+        "aggs": {
+          "simulations": {
+            "terms": {
+                "field": "_index",
+                "size": 10,
+                "order": {
+                    "first_ts": "desc"
+                }
+            },
+            "aggs": {
+               "last_ts": {
+                 "max": {
+                   "field": "@timestamp"
+                 }
+               },
+               "first_ts": {
+                 "min": {
+                   "field": "@timestamp"
+                 }
+               },
+               "req_duration_stats" : { "stats" : { "field" : "responseDuration" } },
+               "status_codes": { "terms": { "field": "statusCode.keyword" } }
             }
           }
         }
-      }
     }'''
     headers = {
         'content-type': "application/json",
         'cache-control': "no-cache"
         }
     response = requests.request("POST", url, data=payload, headers=headers).json()
-    response = response['aggregations']['simulation']['buckets']
+    response = response['aggregations']['simulations']['buckets']
     return jsonify(response)
 
 
