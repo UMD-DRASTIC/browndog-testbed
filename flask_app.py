@@ -90,7 +90,8 @@ def recent_sims():
                  }
                },
                "req_duration_stats" : { "stats" : { "field" : "responseDuration" } },
-               "status_codes": { "terms": { "field": "statusCode.keyword" } }
+               "status_codes": { "terms": { "field": "statusCode.keyword" } },
+               "sim_class": { "terms": { "field": "simulationClass.keyword" } }
             }
           }
         }
