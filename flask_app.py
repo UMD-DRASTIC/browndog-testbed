@@ -65,7 +65,7 @@ def format_report(inbytes=False):
 
 @app.route('/recent_sims')
 def recent_sims():
-    url = "{0}/gatling-bd-%2A/_search".format(elasticsearch_url)
+    url = "{0}/gatling-ldp-%2A/_search".format(elasticsearch_url)
     payload = '''
     {
       "size": 0,

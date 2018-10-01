@@ -1,4 +1,4 @@
-- hosts: browndog-testbed
+- hosts: fedora-testbed
   become: yes
 
   vars:
@@ -48,29 +48,3 @@
       service: name={{ item }} enabled=yes state=restarted
       with_items:
         - nginx
-
-    # - name: Brown Dog testing cron job setup
-    #   copy:
-    #     dest: /etc/cron.d/browndogtests
-    #     owner: root
-    #     mode: 0700
-    #     content: |
-    #       # Cron placed by Gatling Testbed Ansible playbook.
-    #   tags: cron
-
-    # - cron:
-    #     name: "Nightly batch of Brown Dog tests"
-    #     weekday: "*"
-    #     minute: 0
-    #     hour: 1
-    #     user: root
-    #     job: "{{ install_folder }}/browndogtests.sh 2>/tmp/browndogtests.log"
-    #     cron_file: browndogtests
-    #   tags: cron
-    #
-    # - template:
-    #     src: browndogtests.sh.j2
-    #     dest: "{{ install_folder }}/browndogtests.sh"
-    #     mode: 0755
-    #     owner: root
-    #   tags: cron
