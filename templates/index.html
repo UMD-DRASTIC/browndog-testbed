@@ -91,11 +91,11 @@
           <div class="row placeholders">
           <div class="col-*-6">
           <h2 class="sub-header">Recent Simulations</h2>
-              <table id="sims" class="table table-striped">
+              <table class="table table-striped">
                 <thead>
-                  <tr><th>Name</th><th>Errors</th><th>Date</th></tr>
+                  <tr><th>Simulation</th><th>Started</th><th>Requests</th><th>OK / KO</th><th>Avg / Max / Min</th><th>Dashboard</th></tr>
                 </thead>
-                <tbody>
+                <tbody id="recent_sims">
                 </tbody>
               </table>
           </div>
@@ -107,24 +107,38 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/docs.min.js"></script>
     <script type="text/javascript">
-    $.getJSON("/rest/sim/",function(data){
-      for(var key in data) {
-        var name = data[key].name;
-        $("#append-sims").after("<li><a href='/rest/sim/"+key+"'>"+name+"</a></li>");
-      }
+    $.getJSON("/recent_sims",function(data){
+      console.log(data);
+      $.each(data, function (index, obj) {
+        var name = obj['key'];
+        var sim = obj['sim_class']['buckets'][0]['key']
+        var to_ts = obj['last_ts']['value'] + 60000;
+        var from_ts = obj['first_ts']['value'] - 60000;
+        var time = obj['first_ts']['value_as_string'];
+        var ok = 0;
+        var ko = 0;
+        var count = Math.round(obj['req_duration_stats']['count']);
+        var avg = Math.round(obj['req_duration_stats']['avg']);
+        var max = Math.round(obj['req_duration_stats']['max']);
+        var min = Math.round(obj['req_duration_stats']['min']);
+        var grafana_link = `http://browndog-testbed.umd.edu:3000/dashboard/db/brown-dog-dashboard?from=${from_ts}&to=${to_ts}`;
+        var el = $("<tr><td>"+sim+"</td><td>"+time+"</td><td>"+count+"</td><td>"+ko+"/"+ok+"</td><td>"+avg+"ms / "+max+"ms / "+min+"ms</td><td><a href='"+grafana_link+"'><img height='35px' width='35px' src='/static/graph-icon.png'/></a></td></tr>");
+        el.appendTo('#recent_sims');
+      });
     });
 
     	var simulationResults;
 
-    	d3.json("/rest/reports/", function(error, json) {
-    	  if (error) return console.warn(error);
-    	  simulationResults = json["simulation-results"];
-    	  visualizeit();
-    	});
+    	// d3.json("/rest/reports/", function(error, json) {
+    	//   if (error) return console.warn(error);
+    	//   simulationResults = json["simulation-results"];
+    	//   visualizeit();
+    	// });
 
     	function visualizeit() {
     		 // create the table header

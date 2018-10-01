@@ -63,5 +63,47 @@ def format_report(inbytes=False):
     return jsonify(response)
 
 
+@app.route('/recent_sims')
+def recent_sims():
+    url = "{0}/gatling-bd-%2A/_search".format(elasticsearch_url)
+    payload = '''
+    {
+      "size": 0,
+        "aggs": {
+          "simulations": {
+            "terms": {
+                "field": "_index",
+                "size": 10,
+                "order": {
+                    "first_ts": "desc"
+                }
+            },
+            "aggs": {
+               "last_ts": {
+                 "max": {
+                   "field": "@timestamp"
+                 }
+               },
+               "first_ts": {
+                 "min": {
+                   "field": "@timestamp"
+                 }
+               },
+               "req_duration_stats" : { "stats" : { "field" : "responseDuration" } },
+               "status_codes": { "terms": { "field": "statusCode.keyword" } },
+               "sim_class": { "terms": { "field": "simulationClass.keyword" } }
+            }
+          }
+        }
+    }'''
+    headers = {
+        'content-type': "application/json",
+        'cache-control': "no-cache"
+        }
+    response = requests.request("POST", url, data=payload, headers=headers).json()
+    response = response['aggregations']['simulations']['buckets']
+    return jsonify(response)
+
+
 if __name__ == '__main__':
     app.run("0.0.0.0", processes=5)
