@@ -3,4 +3,3 @@ requests
 PyYAML
 PyLD
 gunicorn
-ansible-container[docker]

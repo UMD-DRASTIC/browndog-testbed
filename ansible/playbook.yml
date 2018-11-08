@@ -1,4 +1,4 @@
-- hosts: fedora-testbed
+- hosts: drastic-testbed
   become: yes
 
   vars:

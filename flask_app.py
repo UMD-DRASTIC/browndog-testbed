@@ -67,42 +67,50 @@ def format_report(inbytes=False):
 def recent_sims():
     url = "{0}/gatling-ldp-%2A/_search".format(elasticsearch_url)
     payload = '''
-    {
-      "size": 0,
+{
+  "size": 0,
+    "aggs": {
+      "simulations": {
+        "terms": {
+            "field": "_index",
+            "size": 10,
+            "order": {
+                "start": "desc"
+            }
+        },
         "aggs": {
-          "simulations": {
-            "terms": {
-                "field": "_index",
-                "size": 10,
-                "order": {
-                    "first_ts": "desc"
+            "Requests": {
+                "filter": {"type": {"value": "REQUEST"} },
+                "aggs": {
+                    "last_ts": {"max": {"field": "@timestamp"} },
+                    "first_ts": {"min": {"field": "@timestamp"} },
+                    "req_duration_stats" : { "stats" : { "field" : "duration" } },
+                    "status": { "terms": { "field": "status" } }
                 }
             },
-            "aggs": {
-               "last_ts": {
-                 "max": {
-                   "field": "@timestamp"
-                 }
-               },
-               "first_ts": {
-                 "min": {
-                   "field": "@timestamp"
-                 }
-               },
-               "req_duration_stats" : { "stats" : { "field" : "responseDuration" } },
-               "status_codes": { "terms": { "field": "statusCode.keyword" } },
-               "sim_class": { "terms": { "field": "simulationClass.keyword" } }
-            }
-          }
+            "sim_class": {"terms": {"field": "simulationClass.keyword"} },
+            "start": {"min": {"field": "@timestamp"} },
+            "subject_docker_name": {"terms": {"field": "subject_docker_name.keyword"} },
+            "subject_commit": {"terms": {"field": "subject_commit.keyword"} },
+            "subject_docker_tag": {"terms": {"field": "subject_docker_tag.keyword"} },
+            "frontend_nodes": {"terms": {"field": "frontend_nodes.keyword"} },
+            "backend_nodes": {"terms": {"field": "backend_nodes.keyword"} }
         }
-    }'''
+      }
+    }
+}
+    '''
     headers = {
         'content-type': "application/json",
         'cache-control': "no-cache"
         }
     response = requests.request("POST", url, data=payload, headers=headers).json()
-    response = response['aggregations']['simulations']['buckets']
-    return jsonify(response)
+    result = []
+    try:
+        result = response['aggregations']['simulations']['buckets']
+    except KeyError:
+        pass
+    return jsonify(result)
 
 
 if __name__ == '__main__':

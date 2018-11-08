@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/static/favicon.ico">
 
-    <title>Fedora Testbed at UMD</title>
+    <title>DRAS-TIC Testbed at UMD</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -37,18 +37,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Fedora Testbed at UMD</a>
+          <a class="navbar-brand" href="#">DRAS-TIC Testbed at UMD</a>
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
+          <!--<ul class="nav navbar-nav navbar-right">
             <li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
-            <!-- <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li> -->
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
-          </form>
+          </form-->
         </div>
       </div>
     </div>
@@ -58,42 +58,69 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="/">Overview</a></li>
-            <li id="append-sims" class="inactive"><a href="http://browndog-testbed.umd.edu:3000/">Grafana (UMD Login)</a></li>
+            <li id="append-sims" class="inactive"><a href="http://drastic-testbed.umd.edu:3000/">Grafana (UMD Login)</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">CI-BER Test Collections</h1>
+          <h1 class="page-header">Digital Repositories at Scale that Invite Computation</h1>
           <div class="row placeholders">
             <div class="col-md-4 placeholder">
-              <h4>Summary</h4>
-              <p>The CI-BER digital archives are used as test data.</p>
-              <span class="text-muted">Some numbers</span>
+              <h3>Purpose</h3>
+              <p>Our goal is to prove the performance of digital repository architectures under emerging next-generation workloads.
+                We do this by the building and testing various implementations of the Linked Data Platform (LDP), Memento, and Fedora 5 family of
+                repository specifications. Testing workloads are based on systems requirements gathered in early 2018 from our institutional partners.</p>
+              <h3>Studied Systems</h3>
               <p>
-                <ul style="list-style-type: none; padding:0; margin:0;">
-                  <li>52 terabytes</li>
-                  <li>72,236,659 unique files</li>
-                  <li>Thousands of unique file extensions</li>
-                  <!--li>?? recognized formats</li-->
-                  <li>largest file: 32GB ZIP from NOAA</li>
+                <ul style="padding:0; margin:0;">
+                  <li>Trellis LDP (Cassandra) <a href="https://www.trellisldp.org/">site</a>, <a href="https://github.com/ajs6f/trellis-cassandra">repo</a></li>
+                  <li>Trellis LDP (PostgreSQL) <a href="https://www.trellisldp.org/">site</a>, <a href="https://github.com/trellis-ldp/trellis-ext-db">repo</a></li>
+                  <li>Fedora 5 Reference Implementation (TBA) <a href="https://wiki.duraspace.org/display/FF/Fedora+Repository+Home">site</a>, <a href="https://github.com/fcrepo4/fcrepo4">repo</a></li>
                 </ul>
               </p>
             </div>
             <div id="formatDist" class="col-md-4 placeholder">
-              <h4>File Extensions</h4>
-              <span class="text-muted">top 40 by file count</span><br />
+              <h3>Institutional Partners</h3>
+              <p>
+                <ul style="padding:0; margin:0;">
+                  <li><a href="/static/Interviews_Summary.pdf">Summary of Partner Requirements</a><br /></li>
+                  <li>University of Maryland Libraries - <a href="/static/UMD_Interview_Notes.pdf">interview notes</a></li>
+                  <li>Georgetown University Libraries - <a href="/static/Georgetown_Interview_Notes.pdf">interview notes</a></li>
+                  <li>The Smithsonian Institution (co-creators of Trellis Cassandra) - <a href="/static/SI_Interview_Notes.pdf">interview notes</a></li>
+                  <li>Amherst College (creators of Trellis LDP)</li>
+                  <li>National Center for Supercomputing Applications (creators of Brown Dog)</li>
+                </ul>
+              </p>
             </div>
             <div id="formatByteDist" class="col-md-4 placeholder">
-              <h4>Bytes by File Extension</h4>
-              <span class="text-muted">top 40 by byte count</span><br />
+              <h3>Use Cases</h3>
+              <p>
+                <ul style="list-style-type: none; padding:0; margin:0;">
+                  <li>Digital Manuscripts Collection</li>
+                  <li>Big Scientific Dataset</li>
+                  <li>Citizen Science Image Curation</li>
+                  <li>Social Media Archives</li>
+                </ul>
+              </p>
+              <h3>Performance Workloads</h3>
+              <p>
+                <ul style="padding:0; margin:0;">
+                  <li>Large file ingest</li>
+                  <li>Deeply nested collection ingest and update</li>
+                  <li>Very large folders ingest and update (AKA "Supernode")</li>
+                  <li>Incremental scaling of storage nodes</li>
+                  <li>Dynamic scaling of front-end nodes</li>
+                  <li>Pervasive metadata and feature extraction (Brown Dog)</li>
+                  <li>On-demand conversion to access formats (Brown Dog)</li>
+                </ul>
+              </p>
             </div>
           </div>
-
           <div class="row placeholders">
           <div class="col-*-6">
-          <h2 class="sub-header">Recent Performance Results</h2>
+          <h2 class="sub-header">Recent Results</h2>
               <table class="table table-striped">
                 <thead>
-                  <tr><th>Load Simulation</th><th>Started</th><th>Requests</th><th>OK / KO</th><th>Avg / Max / Min</th><th>Dashboard</th></tr>
+                  <tr><th>Date</th><th>LDP System</th><th>Nodes<br />Front / Back</th><th>Simulation</th><th>Requests<br />OK / KO</th><th>Avg / Max / Min</th><th>Details</th></tr>
                 </thead>
                 <tbody id="recent_sims">
                 </tbody>
@@ -116,18 +143,32 @@
       console.log(data);
       $.each(data, function (index, obj) {
         var name = obj['key'];
-        var sim = obj['sim_class']['buckets'][0]['key']
-        var to_ts = obj['last_ts']['value'] + 60000;
-        var from_ts = obj['first_ts']['value'] - 60000;
-        var time = obj['first_ts']['value_as_string'];
+        var sim = obj['sim_class']['buckets'][0]['key'];
+        var to_ts = obj['Requests']['last_ts']['value'] + 60000;
+        var from_ts = obj['Requests']['first_ts']['value'] - 60000;
+        var time = obj['Requests']['first_ts']['value'];
+        var dt = new Date();
+        dt.setTime(time);
         var ok = 0;
         var ko = 0;
-        var count = Math.round(obj['req_duration_stats']['count']);
-        var avg = Math.round(obj['req_duration_stats']['avg']);
-        var max = Math.round(obj['req_duration_stats']['max']);
-        var min = Math.round(obj['req_duration_stats']['min']);
-        var grafana_link = `http://browndog-testbed.umd.edu:3000/dashboard/db/brown-dog-dashboard?from=${from_ts}&to=${to_ts}`;
-        var el = $("<tr><td>"+sim+"</td><td>"+time+"</td><td>"+count+"</td><td>"+ko+"/"+ok+"</td><td>"+avg+"ms / "+max+"ms / "+min+"ms</td><td><a href='"+grafana_link+"'><img height='35px' width='35px' src='/static/graph-icon.png'/></a></td></tr>");
+        for(var st of obj.Requests.status.buckets) {
+            if(st.key == 0) {
+              ok = st.doc_count;
+            } else {
+              ko = st.doc_count;
+            }
+        }
+        var count = Math.round(obj['Requests']['req_duration_stats']['count']);
+        var avg = Math.round(obj['Requests']['req_duration_stats']['avg']);
+        var max = Math.round(obj['Requests']['req_duration_stats']['max']);
+        var min = Math.round(obj['Requests']['req_duration_stats']['min']);
+        var subject_docker_name = obj['subject_docker_name']['buckets'][0]['key'];
+        var subject_commit = obj['subject_commit']['buckets'][0]['key'];
+        var subject_docker_tag = obj['subject_docker_tag']['buckets'][0]['key'];
+        var frontend_nodes = obj['frontend_nodes']['buckets'][0]['key'];
+        var backend_nodes = obj['backend_nodes']['buckets'][0]['key'];
+        var grafana_link = `http://drastic-testbed.umd.edu:3000/d/V8gNFl-mz/ldp-server-performance?orgId=1&from=${from_ts}&to=${to_ts}`;
+        var el = $("<tr><td>"+dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()+"</td><td>"+subject_docker_name+":"+subject_docker_tag+" (<a href='#'>"+subject_commit+"</a>)</td><td>"+frontend_nodes+" / "+backend_nodes+"</td><td>"+sim+"</td><td>"+ko+" / "+ok+"</td><td>"+avg+" / "+max+" / "+min+" ms</td><td><a href='"+grafana_link+"'><img height='35px' width='35px' src='/static/graph-icon.png'/></a></td></tr>");
         el.appendTo('#recent_sims');
       });
     });
@@ -155,89 +196,6 @@
         tr.append("td").html(function(d) {
             return '<td>'+d["date-time"]["$date"]+ '</td>'});
     	}
-
-      // Word Cloud for Formats
-      var fill = d3.scale.category10();
-
-      var svg1 = d3.select("#formatDist").insert("svg")
-      .attr("width", 300)
-      .attr("height", 300);
-
-      var svg2 = d3.select("#formatByteDist").insert("svg")
-      .attr("width", 300)
-      .attr("height", 300);
-
-      d3.json("/files-in-format", function(error, json) {
-          handleFormatDist(error, json, svg1, function(d) { return d['_source']['doc_count']; });
-        });
-
-      d3.json("/bytes-in-format", function(error, json) {
-          handleFormatDist(error, json, svg2, function(d) { return d['_source']['bytes_in_format']['value']; });
-        });
-
-      function handleFormatDist(error, json, svg, value_fn) {
-        if (error) return console.warn(error);
-        var dist = json["hits"]["hits"].slice(0,40);
-        var highValue = value_fn(dist[0]);
-        var fontSize = d3.scale.linear().domain([0, highValue*2]).rangeRound([10, 100]);
-        for (var i = 0; i < dist.length; i++) {
-          dist[i]['fontSize'] = fontSize(value_fn(dist[i]));
-        }
-        d3.layout.cloud().size([300, 300])
-        .timeInterval(10)
-        .words(dist.map(function(d) {
-          return {text: d["_id"], count: value_fn(d), fontSize: d["fontSize"] };
-        }))
-        .padding(5)
-        .rotate(function() { return ~~(Math.random() * 5) * 30 - 60; })
-        .font("Arial Black")
-        .fontSize(function(d) {
-          var s = d.fontSize;
-          return s;
-        })
-        .on("end", function(words) { draw(words, svg); })
-        .start();
-      }
-
-    function draw(words, svg) {
-      svg
-      .append("g")
-      .attr("transform", "translate(150,150)")
-      .selectAll("text")
-      .data(words)
-      .enter().append("text")
-      .style("font-size", function(d) {
-        var s = d.fontSize+"px";
-        return s;
-      })
-      .style("font-family", "Arial Black")
-      .style("fill", function(d, i) { return fill(i); })
-      .attr("text-anchor", "middle")
-      .attr("transform", function(d) {
-        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-      })
-      .text(function(d) { return d.text; });
-    }
-
-    /*function draw2(words) {
-      svg2
-      .append("g")
-      .attr("transform", "translate(150,150)")
-      .selectAll("text")
-      .data(words)
-      .enter().append("text")
-      /*.style("font-size", function(d) {
-        var s = fontSize(+d.count)+"px";
-        return s;
-      })
-      .style("font-family", "Arial Black")
-      .style("fill", function(d, i) { return fill(i); })
-      .attr("text-anchor", "middle")
-      .attr("transform", function(d) {
-        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-      })
-      .text(function(d) { return d.text; });
-    }*/
     </script>
   </body>
 </html>
