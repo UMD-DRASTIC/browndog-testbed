@@ -17,7 +17,8 @@ handler = handlers.RotatingFileHandler(
 app.logger.addHandler(handler)
 
 elasticsearch_url = os.getenv('ELASTICSEARCH_URL', default='http://localhost:9200')
-
+grafana_url = os.getenv('GRAFANA_URL', default='http://localhost:3000')
+grafana_authz_token = os.getenv("GRAFANA_AUTHZ_TOKEN")
 app.config.update(dict(
     # DATABASE=os.path.join(app.instance_path, 'sqlite3.db'),
     DEBUG=True,
@@ -63,6 +64,16 @@ def format_report(inbytes=False):
     return jsonify(response)
 
 
+@app.route('/list_snapshots')
+def list_snapshots():
+    url = "{0}/api/dashboard/snapshots".format(grafana_url)
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': grafana_authz_token
+    }
+    return jsonify(requests.request("GET", url, headers=headers).json())
+
+
 @app.route('/recent_sims')
 def recent_sims():
     url = "{0}/gatling-ldp-%2A/_search".format(elasticsearch_url)
@@ -85,7 +96,7 @@ def recent_sims():
                     "last_ts": {"max": {"field": "@timestamp"} },
                     "first_ts": {"min": {"field": "@timestamp"} },
                     "req_duration_stats" : { "stats" : { "field" : "duration" } },
-                    "status": { "terms": { "field": "status" } }
+                    "status": { "terms": { "field": "okay" } }
                 }
             },
             "sim_class": {"terms": {"field": "simulationClass.keyword"} },
@@ -94,7 +105,8 @@ def recent_sims():
             "subject_commit": {"terms": {"field": "subject_commit.keyword"} },
             "subject_docker_tag": {"terms": {"field": "subject_docker_tag.keyword"} },
             "frontend_nodes": {"terms": {"field": "frontend_nodes.keyword"} },
-            "backend_nodes": {"terms": {"field": "backend_nodes.keyword"} }
+            "backend_nodes": {"terms": {"field": "backend_nodes.keyword"} },
+            "testworker_nodes": {"terms": {"field": "testworker_nodes.keyword"} }
         }
       }
     }

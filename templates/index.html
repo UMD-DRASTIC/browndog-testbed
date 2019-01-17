@@ -120,7 +120,7 @@
           <h2 class="sub-header">Recent Results</h2>
               <table class="table table-striped">
                 <thead>
-                  <tr><th>Date</th><th>LDP System</th><th>Nodes<br />Front / Back</th><th>Simulation</th><th>Requests<br />OK / KO</th><th>Avg / Max / Min</th><th>Details</th></tr>
+                  <tr><th>Date</th><th>LDP System</th><th>Nodes<br />Front / Back</th><th>Simulation</th><th>Tester<br />Nodes</th><th>Requests<br />OK / KO</th><th>Avg / Max / Min</th><th>Details</th></tr>
                 </thead>
                 <tbody id="recent_sims">
                 </tbody>
@@ -139,7 +139,19 @@
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/docs.min.js"></script>
     <script type="text/javascript">
-    $.getJSON("/recent_sims",function(data){
+    var data;
+    var snapshots = {};
+    $.when(
+      $.getJSON("/recent_sims", function(simdata) {
+        data = simdata;
+      }),
+      $.getJSON("/list_snapshots", function(snapdata) {
+        for(var snap of snapdata) {
+          snapshots[snap['name']]=snap['key'];
+        }
+        console.log(snapshots)
+      })
+    ).then(function() {
       console.log(data);
       $.each(data, function (index, obj) {
         var name = obj['key'];
@@ -152,9 +164,9 @@
         var ok = 0;
         var ko = 0;
         for(var st of obj.Requests.status.buckets) {
-            if(st.key == 0) {
+            if(st.key == "OK") {
               ok = st.doc_count;
-            } else {
+            } else if (st.key == "KO") {
               ko = st.doc_count;
             }
         }
@@ -167,9 +179,21 @@
         var subject_docker_tag = obj['subject_docker_tag']['buckets'][0]['key'];
         var frontend_nodes = obj['frontend_nodes']['buckets'][0]['key'];
         var backend_nodes = obj['backend_nodes']['buckets'][0]['key'];
-        var grafana_link = `http://drastic-testbed.umd.edu:3000/d/V8gNFl-mz/ldp-server-performance?orgId=1&from=${from_ts}&to=${to_ts}`;
-        var el = $("<tr><td>"+dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()+"</td><td>"+subject_docker_name+":"+subject_docker_tag+" (<a href='#'>"+subject_commit+"</a>)</td><td>"+frontend_nodes+" / "+backend_nodes+"</td><td>"+sim+"</td><td>"+ko+" / "+ok+"</td><td>"+avg+" / "+max+" / "+min+" ms</td><td><a href='"+grafana_link+"'><img height='35px' width='35px' src='/static/graph-icon.png'/></a></td></tr>");
-        el.appendTo('#recent_sims');
+        var testworker_nodes = obj['testworker_nodes']['buckets'][0]['key'];
+        var grafana_link = `http://drastic-testbed.umd.edu:3000/d/MwnPtQfiz/ldp-performance-test-dashboard?orgId=1&from=${from_ts}&to=${to_ts}`;
+        var snapshot_link = null;
+        if(name in snapshots) {
+          snapshot_key = snapshots[name];
+          snapshot_link = `http://drastic-testbed.umd.edu:3000/dashboard/snapshot/${snapshot_key}`;
+        }
+        var el = "<tr><td>"+dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()+"</td><td>"+subject_docker_name+":"+subject_docker_tag+" (<a href='#'>"+subject_commit+"</a>)</td><td>"+frontend_nodes+" / "+backend_nodes+"</td><td>"+sim+"</td><td>"+testworker_nodes+"</td><td>"+ok+" / "+ko+"</td><td>"+avg+" / "+max+" / "+min+" ms</td><td>";
+        if(snapshot_link != null) {
+          el += "<a title='Grafana snapshot (public)' href='"+snapshot_link+"'><img height='35px' width='35px' src='/static/graph-icon.png'/></a> ";
+        } else {
+          el += name+" ";
+        }
+        el += "<a title='Grafana dashboard (private)' href='"+grafana_link+"'><emphasis>i</emphasis></a></td></tr>";
+        $(el).appendTo('#recent_sims');
       });
     });
 
