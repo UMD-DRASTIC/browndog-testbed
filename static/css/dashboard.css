@@ -81,18 +81,51 @@ body {
  */
 
 .placeholders {
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
   /* text-align: center; */
 }
 .placeholders h4 {
   margin-bottom: 0;
 }
 .placeholder {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 .placeholder img {
   display: inline-block;
   border-radius: 50%;
+}
+
+table.results th.rotate {
+  /* Something you can count on */
+  height: 140px;
+  white-space: nowrap;
+}
+
+table.results th.rotate > div {
+  transform:
+    /* Magic Numbers */
+    /* translate(25px, 51px) */
+    /* 45 is really 360 - 45 */
+    rotate(315deg);
+  width: 30px;
+}
+
+table.results th.rotate > div > span {
+  border-bottom: 1px solid #ccc;
+  padding: 5px 10px;
+}
+
+table.results {
+  font-size: x-small;
+}
+
+table.results td {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+table.results td.term:hover {
+  background-color: cyan;
 }
 
 .area {

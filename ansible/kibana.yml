@@ -1,7 +1,0 @@
----
-  - apt: pkg=apt-transport-https state=installed
-  - apt_repository: repo='deb https://artifacts.elastic.co/packages/5.x/apt stable main' state=present
-  - apt_key: url=https://artifacts.elastic.co/GPG-KEY-elasticsearch state=present
-  - apt: pkg=kibana state=installed update_cache=yes allow_unauthenticated=yes
-  - template: src=kibana.yml dest=/etc/kibana/kibana.yml
-  - service: name=kibana enabled=yes state=restarted

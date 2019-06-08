@@ -11,8 +11,9 @@
     <title>DRAS-TIC Testbed at UMD</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+ 
     <!-- Custom styles for this template -->
     <link href="/static/css/dashboard.css" rel="stylesheet">
 
@@ -22,8 +23,8 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="/static/js/d3.layout.cloud.js"></script>
+    <!--script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/static/js/d3.layout.cloud.js"></script-->
   </head>
 
   <body>
@@ -54,14 +55,14 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+      <div class="row-fluid">
+        <!-- <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="/">Overview</a></li>
             <li id="append-sims" class="inactive"><a href="http://drastic-testbed.umd.edu:3000/">Grafana (UMD Login)</a></li>
           </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        </div> -->
+        <div class="col-sm-9 col-md-10 main">
           <h1 class="page-header">Digital Repositories at Scale that Invite Computation</h1>
           <div class="row placeholders">
             <div class="col-md-4 placeholder">
@@ -115,111 +116,68 @@
               </p>
             </div>
           </div>
-          <div class="row placeholders">
-          <div class="col-*-6">
-          <h2 class="sub-header">Recent Results</h2>
-              <table class="table table-striped">
-                <thead>
-                  <tr><th>Date</th><th>LDP System</th><th>Nodes<br />Front / Back</th><th>Simulation</th><th>Tester<br />Nodes</th><th>Requests<br />OK / KO</th><th>Avg / Max / Min</th><th>Details</th></tr>
-                </thead>
-                <tbody id="recent_sims">
-                </tbody>
-              </table>
-          </div>
-        </div>
       </div>
+    </div>
+    <div style="clear: both"></div>
+    <div class="row">
+      <h2 style="text-align: center">Test Results</h2>
+      <div class="span12" id="testresults"></div>
     </div>
   </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script src="/static/css/jquery.dataTables.min.css"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/docs.min.js"></script>
+    <script src="/static/js/testbed.js"></script>
     <script type="text/javascript">
-    var data;
-    var snapshots = {};
-    $.when(
-      $.getJSON("/recent_sims", function(simdata) {
-        data = simdata;
-      }),
-      $.getJSON("/list_snapshots", function(snapdata) {
-        for(var snap of snapdata) {
-          snapshots[snap['name']]=snap['key'];
-        }
-        console.log(snapshots)
-      })
-    ).then(function() {
-      console.log(data);
-      $.each(data, function (index, obj) {
-        var name = obj['key'];
-        var sim = obj['sim_class']['buckets'][0]['key'];
-        var to_ts = obj['Requests']['last_ts']['value'] + 60000;
-        var from_ts = obj['Requests']['first_ts']['value'] - 60000;
-        var time = obj['Requests']['first_ts']['value'];
-        var dt = new Date();
-        dt.setTime(time);
-        var ok = 0;
-        var ko = 0;
-        for(var st of obj.Requests.status.buckets) {
-            if(st.key == "OK") {
-              ok = st.doc_count;
-            } else if (st.key == "KO") {
-              ko = st.doc_count;
-            }
-        }
-        var count = Math.round(obj['Requests']['req_duration_stats']['count']);
-        var avg = Math.round(obj['Requests']['req_duration_stats']['avg']);
-        var max = Math.round(obj['Requests']['req_duration_stats']['max']);
-        var min = Math.round(obj['Requests']['req_duration_stats']['min']);
-        var subject_docker_name = obj['subject_docker_name']['buckets'][0]['key'];
-        var subject_commit = obj['subject_commit']['buckets'][0]['key'];
-        var subject_docker_tag = obj['subject_docker_tag']['buckets'][0]['key'];
-        var frontend_nodes = obj['frontend_nodes']['buckets'][0]['key'];
-        var backend_nodes = obj['backend_nodes']['buckets'][0]['key'];
-        var testworker_nodes = obj['testworker_nodes']['buckets'][0]['key'];
-        var grafana_link = `http://drastic-testbed.umd.edu:3000/d/MwnPtQfiz/ldp-performance-test-dashboard?orgId=1&from=${from_ts}&to=${to_ts}`;
-        var snapshot_link = null;
-        if(name in snapshots) {
-          snapshot_key = snapshots[name];
-          snapshot_link = `http://drastic-testbed.umd.edu:3000/dashboard/snapshot/${snapshot_key}`;
-        }
-        var el = "<tr><td>"+dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()+"</td><td>"+subject_docker_name+":"+subject_docker_tag+" (<a href='#'>"+subject_commit+"</a>)</td><td>"+frontend_nodes+" / "+backend_nodes+"</td><td>"+sim+"</td><td>"+testworker_nodes+"</td><td>"+ok+" / "+ko+"</td><td>"+avg+" / "+max+" / "+min+" ms</td><td>";
-        if(snapshot_link != null) {
-          el += "<a title='Grafana snapshot (public)' href='"+snapshot_link+"'><img height='35px' width='35px' src='/static/graph-icon.png'/></a> ";
-        } else {
-          el += name+" ";
-        }
-        el += "<a title='Grafana dashboard (private)' href='"+grafana_link+"'><emphasis>i</emphasis></a></td></tr>";
-        $(el).appendTo('#recent_sims');
-      });
+    var filterTermOrder = [
+      "subject_docker_name",
+      "subject_docker_tag",
+      "subject_commit",
+      "simulation",
+      "testbed_commit",
+      "testworker_nodes",
+      "frontend_nodes",
+      "backend_nodes",
+      "cassandra_replication_factor",
+      "cassandra_max_chunk_size",
+      "cassandra_binary_read_consistency",
+      "cassandra_binary_write_consistency",
+      "cassandra_rdf_write_consistency",
+      "cassandra_rdf_read_consistency",
+      "jms_use_queue",
+      "testbed_git_url",
+      "subject_git_url"
+    ];
+
+    $(function() {
+      console.log("Starting..");
+      var testresults = new TestResults(filterTermOrder);
+      testresults.buildTable();
     });
 
-    	var simulationResults;
-
-    	// d3.json("/rest/reports/", function(error, json) {
-    	//   if (error) return console.warn(error);
-    	//   simulationResults = json["simulation-results"];
-    	//   visualizeit();
-    	// });
-
-    	function visualizeit() {
-    		 // create the table header
-    		var simstable = d3.select("#sims > tbody");
-        // alert(simulationResults.length);
-        var tr = simstable.selectAll("tr")
-    		.data(d3.values(simulationResults)).enter()
-        .append("tr");
-        tr.append("td").html(function(d) {
-          return '<a href="/rest/results/'+d["gatling-results-folder"]+'/index.html">'+d["simulation-name"]+'</a>'});
-        tr.append("td").html(function(d) {
-          return '<td>'+d["numberOfRequests"]["ko"]+'/'+d["numberOfRequests"]["total"]+'</td>'})
-        .attr("style", function(d) { return (d["numberOfRequests"]["ko"] > 0) ? "background-color: pink" : ""; });
-        tr.append("td").html(function(d) {
-            return '<td>'+d["date-time"]["$date"]+ '</td>'});
-    	}
+  	function visualizeit() {
+  		 // create the table header
+  		var simstable = d3.select("#sims > tbody");
+      // alert(simulationResults.length);
+      var tr = simstable.selectAll("tr")
+  		.data(d3.values(simulationResults)).enter()
+      .append("tr");
+      tr.append("td").html(function(d) {
+        return '<a href="/rest/results/'+d["gatling-results-folder"]+'/index.html">'+d["simulation-name"]+'</a>'});
+      tr.append("td").html(function(d) {
+        return '<td>'+d["numberOfRequests"]["ko"]+'/'+d["numberOfRequests"]["total"]+'</td>'})
+      .attr("style", function(d) { return (d["numberOfRequests"]["ko"] > 0) ? "background-color: pink" : ""; });
+      tr.append("td").html(function(d) {
+          return '<td>'+d["date-time"]["$date"]+ '</td>'});
+  	}
     </script>
   </body>
 </html>
