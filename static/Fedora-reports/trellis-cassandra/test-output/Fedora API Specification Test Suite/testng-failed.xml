@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Fedora API Specification Test Suite]">
+  <listeners>
+    <listener class-name="org.fcrepo.spec.testsuite.report.HtmlReporter"/>
+    <listener class-name="org.fcrepo.spec.testsuite.report.EarlReporter"/>
+  </listeners>
+  <test name="Fedora API Specification Tests(failed)">
+    <classes>
+      <class name="org.fcrepo.spec.testsuite.versioning.LdprmHttpGet">
+        <methods>
+          <include name="ldpnrmMustHaveMementoLinkHeader"/>
+          <include name="setup"/>
+          <include name="ldprmMustHaveMementoLinkHeader"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdprmHttpGet -->
+      <class name="org.fcrepo.spec.testsuite.versioning.LdpcvHttpGet">
+        <methods>
+          <include name="setup"/>
+          <include name="ldpcvMustHaveTimeMapLinkHeader"/>
+          <include name="tearDown"/>
+          <include name="ldpcvMustHaveContainerLinkHeader"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdpcvHttpGet -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACGeneral">
+        <methods>
+          <include name="agentDouble"/>
+          <include name="setup"/>
+          <include name="agentGroupWithHashUris"/>
+          <include name="agentGroup"/>
+          <include name="agentSingle"/>
+          <include name="tearDown"/>
+          <include name="resourceSingle"/>
+          <include name="allAuthenticatedAgents"/>
+          <include name="agentAll"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACGeneral -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACRepresentation">
+        <methods>
+          <include name="dereferencingGroups"/>
+          <include name="setup"/>
+          <include name="tearDown"/>
+          <include name="aclExamined"/>
+          <include name="aclRepresentation"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACRepresentation -->
+      <class name="org.fcrepo.spec.testsuite.crud.HttpPost">
+        <methods>
+          <include name="postDigestResponseHeaderVerification"/>
+          <include name="postDigestResponseHeaderAuthentication"/>
+          <include name="setup"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.HttpPost -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACRdfSources">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACRdfSources -->
+      <class name="org.fcrepo.spec.testsuite.crud.HttpDelete">
+        <methods>
+          <include name="setup"/>
+          <include name="httpDeleteStatusCheck"/>
+          <include name="tearDown"/>
+          <include name="httpDeleteOptionsCheck"/>
+          <include name="httpDeleteStatusCheckTwo"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.HttpDelete -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACDefaultACLs">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+          <include name="aclInheritanceMustUseLdpContainmentRelationships"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACDefaultACLs -->
+      <class name="org.fcrepo.spec.testsuite.event.NotificationTest">
+        <methods>
+          <include name="setup"/>
+          <include name="testEventSerialization"/>
+          <include name="beforeClass"/>
+          <include name="tearDown"/>
+          <include name="testCatchMessage"/>
+          <include name="testEventSerializationShould"/>
+          <include name="closeConnection"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.event.NotificationTest -->
+      <class name="org.fcrepo.spec.testsuite.versioning.LdpcvHttpOptions">
+        <methods>
+          <include name="setup"/>
+          <include name="ldpcvMaySupportDeleteOption"/>
+          <include name="tearDown"/>
+          <include name="ldpcvMaySupportPatch"/>
+          <include name="ldpcvMaySupportPost"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdpcvHttpOptions -->
+      <class name="org.fcrepo.spec.testsuite.versioning.LdprmHttpOptions">
+        <methods>
+          <include name="setup"/>
+          <include name="ldprmOptionsMaySupportDelete"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdprmHttpOptions -->
+      <class name="org.fcrepo.spec.testsuite.versioning.LdprvHttpGet">
+        <methods>
+          <include name="setup"/>
+          <include name="ldpvGetMustReturnOriginalResourceLink"/>
+          <include name="shouldReturn302WhenLdprmFromTimeGate"/>
+          <include name="ldpvGetMustReturnTimeGateTypeLink"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdprvHttpGet -->
+      <class name="org.fcrepo.spec.testsuite.crud.Ldpnr">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.Ldpnr -->
+      <class name="org.fcrepo.spec.testsuite.versioning.LdpcvHttpDelete">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+          <include name="ldpcvMaySupportDelete"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdpcvHttpDelete -->
+      <class name="org.fcrepo.spec.testsuite.crud.HttpOptions">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.HttpOptions -->
+      <class name="org.fcrepo.spec.testsuite.versioning.ResourceVersioning">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+          <include name="convertToLDPRViaPutWithType"/>
+          <include name="postLdprWithType"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.ResourceVersioning -->
+      <class name="org.fcrepo.spec.testsuite.crud.Container">
+        <methods>
+          <include name="ldpIndirectContainerMayAllowLdpMembershipToBeUpdatedByPatch"/>
+          <include name="ldpIndirectContainerMayAllowLdpInsertedContentRelationPredicateToBeUpdatedByPut"/>
+          <include name="ldpIndirectContainerMayAllowLdpMembershipToBeUpdatedByPut"/>
+          <include name="ldpIndirectContainerMustSetLdpMembershipResourceValueToLDPCByDefault"/>
+          <include name="ldpDirectContainerMayAllowLdpIsMemberRelationPredicateToBeUpdatedByPut"/>
+          <include name="ldpIndirectContainerMustAllowInsertedContentRelationPredicateToBeSetOnCreate"/>
+          <include name="ldpIndirectContainerMustAllowIsMemberOfRelationPredicateToBeSetOnCreate"/>
+          <include name="ldpIndirectContainerMustAllowInsertedContentRelationToBeSetByDefault"/>
+          <include name="ldpDirectContainerMayAllowLdpMembershipToBeUpdatedByPatch"/>
+          <include name="ldpDirectContainerMustAllowIsMemberOfRelationPredicateToBeSetOnCreate"/>
+          <include name="ldpIndirectContainerShouldUseLdpMemberByDefault"/>
+          <include name="createLDPIndirectContainer"/>
+          <include name="ldpIndirectContainerMustAllowHasMemberRelationPredicateToBeSetOnCreate"/>
+          <include name="ldpDirectContainerMustSetLdpMembershipResourceByDefault"/>
+          <include name="ldpIndirectContainerMayAllowLdpInsertedContentRelationToBeUpdatedByPatch"/>
+          <include name="ldpIndirectContainerMustAllowMembershipConstantURIToBeSet"/>
+          <include name="ldpDirectContainerMayAllowLdpHasMemberRelationToBeUpdatedByPatch"/>
+          <include name="ldpDirectContainerMayAllowLdpIsMemberRelationToBeUpdatedByPatch"/>
+          <include name="ldpDirectContainerMustAllowMembershipConstantURIToBeSet"/>
+          <include name="ldpIndirectContainerShouldUseLdpMemberSubjectByDefault"/>
+          <include name="ldpIndirectContainerMayAllowLdpIsMemberRelationToBeUpdatedByPatch"/>
+          <include name="createLDPDirectContainer"/>
+          <include name="ldpcContainmentTriples"/>
+          <include name="ldpDirectContainerMayAllowLdpHasMemberRelationPredicateToBeUpdatedByPut"/>
+          <include name="ldpcMinimalContainerTriples"/>
+          <include name="tearDown"/>
+          <include name="ldpDirectContainerMustAllowHasMemberRelationPredicateToBeSetOnCreate"/>
+          <include name="ldpcMembershipTriples"/>
+          <include name="ldpDirectContainerMustAllowMembershipPredicateToBeSetByDefault"/>
+          <include name="ldpIndirectContainerMustAllowMembershipPredicateToBeSetByDefault"/>
+          <include name="ldpIndirectContainerMayAllowLdpIsMemberRelationPredicateToBeUpdatedByPut"/>
+          <include name="setup"/>
+          <include name="ldpIndirectContainerMayAllowLdpHasMemberRelationToBeUpdatedByPatch"/>
+          <include name="ldpIndirectContainerMustSetLdpMembershipResourceByDefault"/>
+          <include name="ldpDirectContainerMustSetLdpMembershipResourceValueToLDPCByDefault"/>
+          <include name="ldpDirectContainerMayAllowLdpMembershipToBeUpdatedByPut"/>
+          <include name="ldpDirectContainerShouldUseLdpMemberByDefault"/>
+          <include name="ldpIndirectContainerMayAllowLdpHasMemberRelationPredicateToBeUpdatedByPut"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.Container -->
+      <class name="org.fcrepo.spec.testsuite.crud.HttpPut">
+        <methods>
+          <include name="setup"/>
+          <include name="httpPutUpdateDisallowedTriplesConstrainedByHeader"/>
+          <include name="httpPutUpdateDisallowedTriples"/>
+          <include name="tearDown"/>
+          <include name="putCreateNonRDFSource"/>
+          <include name="nonRDFSourcePutDigestResponseHeaderAuthentication"/>
+          <include name="putCreateRDFSource"/>
+          <include name="httpPutUpdateDisallowedTriplesResponse"/>
+          <include name="nonRDFSourcePutDigestResponseHeaderVerification"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.HttpPut -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACLinking">
+        <methods>
+          <include name="linkToAclOnCreation"/>
+          <include name="setup"/>
+          <include name="conflictIfNotSupportingAclLink"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACLinking -->
+      <class name="org.fcrepo.spec.testsuite.crud.ExternalBinaryContent">
+        <methods>
+          <include name="postCreateExternalBinaryContentCopy"/>
+          <include name="putCreateExternalFileUriBinaryCopy"/>
+          <include name="postCreateExternalFileUriBinaryProxy"/>
+          <include name="putCreateExternalFileUriBinaryRedirect"/>
+          <include name="postCreateExternalBinaryContentRedirect"/>
+          <include name="binaryContentGuaranteeHeaders"/>
+          <include name="unsupportedBinaryContentHandlingAttribute"/>
+          <include name="putUpdateExternalFileUriBinaryRedirect"/>
+          <include name="stopServer"/>
+          <include name="externalBinaryContentHandlingAttribute"/>
+          <include name="binaryContentRedirectStatusHead"/>
+          <include name="binaryContentNoTypeUnsupported"/>
+          <include name="putUpdateExternalBinaryContentCopy"/>
+          <include name="putUpdateExternalBinaryContentProxy"/>
+          <include name="binaryContentProxyWantDigest"/>
+          <include name="externalBinaryContentHandlingStatus"/>
+          <include name="postCreateExternalFileUriBinaryCopy"/>
+          <include name="binaryContentNoTypeExternalType"/>
+          <include name="postCreateExternalFileUriBinaryRedirect"/>
+          <include name="putCreateExternalFileUriBinaryProxy"/>
+          <include name="binaryContentRedirectWantDigest"/>
+          <include name="tearDown"/>
+          <include name="putCreateExternalBinaryContentCopy"/>
+          <include name="putCreateExternalBinaryContentRedirect"/>
+          <include name="putCreateExternalBinaryContentProxy"/>
+          <include name="putUpdateExternalBinaryContentRedirect"/>
+          <include name="binaryContentContentTypeAndNoType"/>
+          <include name="binaryContentOptions"/>
+          <include name="binaryContentNoTypeDefault"/>
+          <include name="setup"/>
+          <include name="putUpdateExternalFileUriBinaryCopy"/>
+          <include name="unsupportedExternalBinaryContentStatus"/>
+          <include name="postCreateExternalBinaryContentProxy"/>
+          <include name="binaryContentContentTypeAndType"/>
+          <include name="binaryContentRedirectStatusGet"/>
+          <include name="binaryContentMediaType"/>
+          <include name="unsupportedExternalBinaryContentConstraint"/>
+          <include name="putUpdateExternalFileUriBinaryProxy"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.ExternalBinaryContent -->
+      <class name="org.fcrepo.spec.testsuite.crud.HttpHead">
+        <methods>
+          <include name="httpHeadResponseHeadersSameAsHttpGet"/>
+          <include name="setup"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.HttpHead -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACLinkHeaders">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACLinkHeaders -->
+      <class name="org.fcrepo.spec.testsuite.crud.HttpPatch">
+        <methods>
+          <include name="disallowChangeResourceType"/>
+          <include name="setup"/>
+          <include name="tearDown"/>
+          <include name="statementNotPersistedConstrainedBy"/>
+          <include name="ldpPatchContentTypeSupport"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.HttpPatch -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACAccessToClass">
+        <methods>
+          <include name="accessToClassMustGiveAccessToContainer"/>
+          <include name="setup"/>
+          <include name="accessToClassMustGiveAccessToBinary"/>
+          <include name="accessToClassMayUseInference"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACAccessToClass -->
+      <class name="org.fcrepo.spec.testsuite.crud.StateToken">
+        <methods>
+          <include name="stateTokenHead"/>
+          <include name="goodStateTokenOnPatchWhenStateTokensSupported"/>
+          <include name="setup"/>
+          <include name="badStateTokenOnPutWhenStateTokensSupported"/>
+          <include name="badStateTokenOnPatchWhenStateTokensSupported"/>
+          <include name="goodStateTokenOnPutSucceedsWhenStateTokensSupported"/>
+          <include name="stateTokenGet"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.StateToken -->
+      <class name="org.fcrepo.spec.testsuite.versioning.LdprmHttpDelete">
+        <methods>
+          <include name="setup"/>
+          <include name="tearDown"/>
+          <include name="ldprmMustSupportDeleteIfAdvertised"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdprmHttpDelete -->
+      <class name="org.fcrepo.spec.testsuite.crud.HttpGet">
+        <methods>
+          <include name="additionalValuesForPreferHeaderContainedDescriptions"/>
+          <include name="setup"/>
+          <include name="respondWantDigestMd5"/>
+          <include name="respondWantDigestSha1"/>
+          <include name="respondWantDigestNonSupported"/>
+          <include name="tearDown"/>
+          <include name="respondWantDigestNonSupportedWithSupported"/>
+          <include name="additionalValuesForPreferHeader"/>
+          <include name="respondWantDigestTwoSupportedQvalueZero"/>
+          <include name="respondWantDigestSha256"/>
+          <include name="respondWantDigestTwoSupported"/>
+          <include name="respondWantDigestTwoSupportedQvalueNonZero"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.crud.HttpGet -->
+      <class name="org.fcrepo.spec.testsuite.versioning.LdpcvHttpPost">
+        <methods>
+          <include name="ldpcvDoesNotSupportPost"/>
+          <include name="setup"/>
+          <include name="postToldpcvOfLdprsWithoutMementoDatetimeMustIgnoreBody"/>
+          <include name="ldpcvOfLdprsShouldSupportPostWithoutMementoDatetimeHeader"/>
+          <include name="ldpcvOfLdpnrsShouldSupportPostWithoutMementoDatetimeHeader"/>
+          <include name="tearDown"/>
+          <include name="ldpcvMayDisallowPost"/>
+          <include name="postToldpcvOfLdpnrWithoutMementoDatetimeMustIgnoreBody"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdpcvHttpPost -->
+      <class name="org.fcrepo.spec.testsuite.versioning.LdprvHttpPut">
+        <methods>
+          <include name="setup"/>
+          <include name="ldprvMustSupportPUT"/>
+          <include name="changeLDPRToAnLDPRv"/>
+          <include name="ldpnrvMustSupportPUTForExistingResources"/>
+          <include name="tearDown"/>
+          <include name="ldpnrvMustSupportPUT"/>
+          <include name="ldprvMustSupportPUTForExistingResources"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.versioning.LdprvHttpPut -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACCrossDomain">
+        <methods>
+          <include name="restrictAclToLocal"/>
+          <include name="setup"/>
+          <include name="rejectRemoteAclConstraint"/>
+          <include name="restrictGroupToLocal"/>
+          <include name="rejectRemoteGroupStatus"/>
+          <include name="rejectRemoteGroupConstraint"/>
+          <include name="tearDown"/>
+          <include name="rejectRemoteAclStatus"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACCrossDomain -->
+      <class name="org.fcrepo.spec.testsuite.authz.WebACModes">
+        <methods>
+          <include name="writeAllowedPOST"/>
+          <include name="tearDown"/>
+          <include name="appendNotWritePutToCreate"/>
+          <include name="appendAllowedPATCH"/>
+          <include name="readAllowedGET"/>
+          <include name="readAllowedHEAD"/>
+          <include name="setup"/>
+          <include name="writeAllowedPATCH"/>
+          <include name="appendAllowedPOST"/>
+          <include name="appendNotWriteLdpRsShould"/>
+          <include name="writeAllowedDELETE"/>
+          <include name="controlDisallowedPUT"/>
+          <include name="writeAllowedPUT"/>
+          <include name="appendNotWriteLdpCMust"/>
+          <include name="controlAllowedPATCH"/>
+          <include name="controlAllowedPUT"/>
+          <include name="controlAllowedGET"/>
+        </methods>
+      </class> <!-- org.fcrepo.spec.testsuite.authz.WebACModes -->
+    </classes>
+  </test> <!-- Fedora API Specification Tests(failed) -->
+</suite> <!-- Failed suite [Fedora API Specification Test Suite] -->
